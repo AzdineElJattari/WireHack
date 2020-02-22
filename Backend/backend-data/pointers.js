@@ -70,8 +70,8 @@ function getPointFromRaduis(lat, lng, r) {
 
 //Function #3
 function createPointers() {
-  if (pointers.length < 1250) {
-    for (let i = 0; i < 250 /*Bijvoegen van zombies per interval*/; i++) {
+  if (pointers.length < 1250 / 4) {
+    for (let i = 0; i < 50 /*Bijvoegen van zombies per interval*/; i++) {
       let pointi = Math.abs(Math.round(Math.random() * POINTS.length - 1));
       let point = POINTS[pointi];
 
@@ -94,7 +94,7 @@ function createPointers() {
 
 //Function #4
 function sendZombiesToCentralPoint() {
-  const r = 0.0005; //Aanpassen voor snelheid zombies aan te passen
+  const r = 0.00025; //Aanpassen voor snelheid zombies aan te passen
   pointers.forEach(pointer => {
     let closest = POINTS[0];
     let d = 588;
@@ -127,9 +127,11 @@ function sendZombiesToCentralPoint() {
     if (pointer.longitude < closest.longitude) {
       rX = -rX;
     }
-    pointer.latitude -= rY;
-    pointer.longitude -= rX;
-
+    if(Math.random() * 100 > 50){
+      pointer.latitude -= rY;
+    }else{
+      pointer.longitude -= rX;
+    }
     if (
       getDistanceFromLatLonInKm(
         closest.latitude,
@@ -190,12 +192,53 @@ function updatePointers() {
 createPointers();
 
 //Setting interval to update the pointers positioning on the Leaflet map
-setInterval(sendZombiesToCentralPoint, 2000);
+setInterval(sendZombiesToCentralPoint, 800);
 
-module.exports = pointers;
+const playSound = () => {
+  pointers.map(pointer=> {
+    let closest = POINTS[0];
+    let d = 588;
+    POINTS.map(x => {
+      if (
+        getDistanceFromLatLonInKm(
+          x.latitude,
+          x.longitude,
+          pointer.latitude,
+          pointer.longitude
+        ) < d
+      ) {
+        closest = x;
+        d = getDistanceFromLatLonInKm(
+          x.latitude,
+          x.longitude,
+          pointer.latitude,
+          pointer.longitude
+        );
+      }
+    });
 
-// 50.799961, 3.279420 -- centraal
-// 50.719920, 3.332220 -- verste
+    if (
+      getDistanceFromLatLonInKm(
+        closest.latitude,
+        closest.longitude,
+        pointer.latitude,
+        pointer.longitude
+      ) < closest.radius * 1000
+    ) {
+      let pointi = Math.abs(Math.round(Math.random() * POINTS.length - 1));
+      let point = POINTS[pointi];
 
-// 0,080041 , -0,0528
-// 0,080041 -- radius
+      let latlng = getPointFromRaduis(
+        point.latitude,
+        point.longitude,
+        point.raduis * 1000
+      );
+
+      pointer.latitude = latlng[0];
+      pointer.longitude = latlng[1];
+    }
+  });
+}
+
+module.exports.pointers = pointers;
+module.exports.playSound = playSound;

@@ -1,4 +1,4 @@
-var pointers = [];
+var humanpointers = [];
 
 //Division points to spread out the zombies
 const POINTS = [
@@ -69,9 +69,9 @@ function getPointFromRaduis(lat, lng, r) {
 }
 
 //Function #3
-function createPointers() {
-  if (pointers.length < 1250) {
-    for (let i = 0; i < 250 /*Bijvoegen van humans per interval*/; i++) {
+function createhumanpointers() {
+  if (humanpointers.length < 1) {
+    for (let i = 0; i < 10 /*Bijvoegen van humans per interval*/; i++) {
       let pointi = Math.abs(Math.round(Math.random() * POINTS.length - 1));
       let point = POINTS[pointi];
 
@@ -85,17 +85,17 @@ function createPointers() {
           latitude: latlng[0],
           longitude: latlng[1]
         };
-        pointers.push(pointer);
+        humanpointers.push(pointer);
       }
     }
-    setTimeout(createPointers, 6500);
   }
 }
 
 //Function #4
 function sendZombiesToCentralPoint() {
   const r = 0.0005; //Aanpassen voor snelheid zombies aan te passen
-  pointers.forEach(pointer => {
+  let i = 0;
+  humanpointers.forEach(pointer => {
     let closest = POINTS[0];
     let d = 588;
     POINTS.map(x => {
@@ -119,37 +119,38 @@ function sendZombiesToCentralPoint() {
     let rX = Math.random() * r;
     let rY = Math.random() * r;
 
-    if(Math.random() * 100 > 30)
     if (pointer.latitude < closest.latitude) {
-      rY = -rY;
+      rY = rY;
     }
-    if(Math.random() * 100 > 30)
     if (pointer.longitude < closest.longitude) {
-      rX = -rX;
+      rX = rX;
     }
     pointer.latitude -= rY;
     pointer.longitude -= rX;
 
+    let remove = false;
+
+    /*pointer.map(x => {
+      if(getDistanceFromLatLonInKm(x.latitude, x.longitude, pointer.latitude, pointer.longitude) < 0.1){
+        remove = true;
+      }
+    });*/
     if (
       getDistanceFromLatLonInKm(
         closest.latitude,
         closest.longitude,
         pointer.latitude,
         pointer.longitude
-      ) < 0.05
+      ) > closest.raduis
     ) {
-      let pointi = Math.abs(Math.round(Math.random() * POINTS.length - 1));
-      let point = POINTS[pointi];
-
-      let latlng = getPointFromRaduis(
-        point.latitude,
-        point.longitude,
-        point.raduis * 1000
-      );
-
-      pointer.latitude = latlng[0];
-      pointer.longitude = latlng[1];
+      remove = true;
     }
+    if(remove){
+
+      humanpointers.slice(i,1);
+      i--;
+    }
+    i++;
   });
 }
 
@@ -172,13 +173,13 @@ function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
 
-//Creating the pointers on the Leaflet map
-createPointers();
+//Creating the humanpointers on the Leaflet map
+createhumanpointers();
 
-//Setting interval to update the pointers positioning on the Leaflet map
-setInterval(sendZombiesToCentralPoint, 2000);
+//Setting interval to update the humanpointers positioning on the Leaflet map
+setInterval(sendZombiesToCentralPoint, 600);
 
-module.exports = pointers;
+module.exports = humanpointers;
 
 // 50.799961, 3.279420 -- centraal
 // 50.719920, 3.332220 -- verste
