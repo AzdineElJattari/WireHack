@@ -1,0 +1,121 @@
+body{
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 0;padding: 0;
+}
+.map{
+  height: 100vh;
+}
+
+tr {
+  border: solid;
+  border-width: 4px;
+  border-color: lightgray;
+  border-right-width: 10px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 13px;
+  color: lightgray;
+}
+
+.fixed_header{
+  width: 400px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin-left: 5%;
+}
+
+.fixed_header tbody{
+display:block;
+width: 100%;
+overflow: auto;
+height: 100px;
+}
+
+.fixed_header tr {
+ display: block;
+}
+
+
+.fixed_header th, .fixed_header td {
+padding: 5px;
+text-align: left;
+width: 200px;
+}
+
+.fixed_header{
+  width: 400px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  position: absolute;
+  margin-top: -33%; 
+}
+
+.fixed_header tbody{
+display:block;
+width: 100%;
+overflow: auto;
+height: 100px;
+}
+
+.fixed_header thead tr {
+ display: block;
+}
+
+.fixed_header thead {
+background: black;
+color:#fff;
+}
+
+.fixed_header th, .fixed_header td {
+padding: 5px;
+text-align: left;
+width: 200px;
+}
+
+.fixed_header{
+  width: 400px;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.fixed_header tbody{
+display:block;
+width: 100%;
+overflow: auto;
+height: 100px;
+}
+
+.fixed_header thead tr {
+ display: block;
+}
+
+.fixed_header thead {
+background: black;
+color:#fff;
+}
+
+.fixed_header th, .fixed_header td {
+padding: 5px;
+text-align: left;
+width: 200px;
+}
+
+.blinker {
+  margin: 0;
+  background-color: black;
+}
+
+.blinker > div{
+  width: 1440px;
+  height: 100vh;
+  margin: 0 auto;
+}
+
+.warning{
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 5000;
+  width: 244px;
+  height: 122px;
+}
