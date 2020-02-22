@@ -71,7 +71,7 @@ function getPointFromRaduis(lat, lng, r) {
 //Function #3
 function createPointers() {
   if (pointers.length < 1250) {
-    for (let i = 0; i < 250 /*Bijvoegen van zombies per interval*/; i++) {
+    for (let i = 0; i < 250 /*Bijvoegen van humans per interval*/; i++) {
       let pointi = Math.abs(Math.round(Math.random() * POINTS.length - 1));
       let point = POINTS[pointi];
 
@@ -170,20 +170,6 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
 
 function deg2rad(deg) {
   return deg * (Math.PI / 180);
-}
-
-//Function #5
-function updatePointers() {
-  for (let i = 0; i < pointers.length; i++) {
-    r = 0.002;
-    let addLat = (Math.random() * (r * 2) - r) % 24;
-    let addLng = Math.random() * (r * 2) - r;
-
-    pointers[i].latitude += addLat;
-    pointers[i].longitude += addLng;
-  }
-  console.log("Updating the pointers...");
-  createPointers();
 }
 
 //Creating the pointers on the Leaflet map
