@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var app = express();
-var pointers = require("./../../backend-data/pointers");
+var {pointers, playSound} = require("./../../backend-data/pointers");
 var humanpointers = require("./../../backend-data/humanpointer");
 var cors= require('cors');
 
@@ -25,5 +25,10 @@ router.get("/", function(req, res, next) {
 router.get("/api/v1/humanpointers", cors(corsOptionsDelegate), (req, res) => {
   res.json(humanpointers);
 });
+
+router.get("/test", cors(corsOptionsDelegate), (req, res) => {
+  playSound();
+  res.json({success: true});
+})
 
 module.exports = router;
