@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var app = express();
 var pointers = require("./../../backend-data/pointers");
-var humanpointers = require("./../../backend-data/humanpointers")
+var humanpointers = require("./../../backend-data/humanpointer");
 var cors= require('cors');
 
 var corsOptionsDelegate = function (req, callback) {
